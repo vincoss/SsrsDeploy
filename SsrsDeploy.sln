@@ -3,8 +3,40 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test", "Test", "{14C49EF1-2C77-4FA5-A888-A2E1E4B76127}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Samples", "Samples", "{5EA2F739-96F2-4E87-AEE6-CE2C277EB66A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SsrsDeploy", "src\SsrsDeploy\SsrsDeploy.csproj", "{46551593-CF43-4A10-8036-C5A8AF63E423}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SsrsDeploy.Test", "test\SsrsDeploy.Test\SsrsDeploy.Test.csproj", "{FD5D80DF-46A2-4217-9C6A-332663B820EB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SsrsDeploy.ConsoleSample", "samples\SsrsDeploy.ConsoleSample\SsrsDeploy.ConsoleSample.csproj", "{40837BD3-A52A-412A-8C56-B5C1B67B9582}"
+EndProject
 Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{46551593-CF43-4A10-8036-C5A8AF63E423}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{46551593-CF43-4A10-8036-C5A8AF63E423}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{46551593-CF43-4A10-8036-C5A8AF63E423}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{46551593-CF43-4A10-8036-C5A8AF63E423}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FD5D80DF-46A2-4217-9C6A-332663B820EB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FD5D80DF-46A2-4217-9C6A-332663B820EB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FD5D80DF-46A2-4217-9C6A-332663B820EB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FD5D80DF-46A2-4217-9C6A-332663B820EB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{40837BD3-A52A-412A-8C56-B5C1B67B9582}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{40837BD3-A52A-412A-8C56-B5C1B67B9582}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{40837BD3-A52A-412A-8C56-B5C1B67B9582}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{40837BD3-A52A-412A-8C56-B5C1B67B9582}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{FD5D80DF-46A2-4217-9C6A-332663B820EB} = {14C49EF1-2C77-4FA5-A888-A2E1E4B76127}
+		{40837BD3-A52A-412A-8C56-B5C1B67B9582} = {5EA2F739-96F2-4E87-AEE6-CE2C277EB66A}
 	EndGlobalSection
 EndGlobal
