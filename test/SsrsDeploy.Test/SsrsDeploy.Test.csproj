@@ -44,6 +44,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DeployBuilderTest.cs" />
     <Compile Include="Engine\EmbeddedReportItemProviderTest.cs" />
     <Compile Include="Engine\ReportItemDeployResultTest.cs" />
     <Compile Include="Engine\ReportItemTest.cs" />
