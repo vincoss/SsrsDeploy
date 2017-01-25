@@ -32,6 +32,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Web.Services" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -40,8 +41,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Engine\DeployBuilder.cs" />
+    <Compile Include="Engine\EmbeddedReportItemProvider.cs" />
+    <Compile Include="Engine\IReportItemProvider.cs" />
+    <Compile Include="Engine\ReportItem.cs" />
+    <Compile Include="Engine\ReportItemDeployResult.cs" />
+    <Compile Include="Extensions.cs" />
+    <Compile Include="Logging\InbuiltLogger.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\ReportingService2010Proxy.cs" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -1,1 +1,1 @@
-SSRS Deploy tool
+Tool to bulk deploy SSRS reports
