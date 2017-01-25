@@ -52,6 +52,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+    <EmbeddedResource Include="Reports\Report.rdl" />
+    <EmbeddedResource Include="Reports\SharedDataSet.rsd" />
+    <EmbeddedResource Include="Reports\SharedDataSource.rds" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\src\SsrsDeploy\SsrsDeploy.csproj">
@@ -63,7 +66,7 @@
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Reports\" />
+    <EmbeddedResource Include="Reports\TextFile.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
