@@ -6,7 +6,7 @@ Tool to bulk deploy SSRS reports
 var variables = new Dictionary<string, string>();
 
 var builder = new DeployBuilder()
-                .WithReportServer("=http://localhost:80/ReportServer/")
+                .WithReportServer("http://localhost:80/ReportServer/")
                 .WithParentPath("/")
                 .WithItemsEmbeddedInAssembly(Assembly.GetExecutingAssembly())
                 .WithVariables(variables)
