@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 using System.Security;
+using System.Xml.Linq;
 
 namespace SsrsDeploy
 {
@@ -57,5 +58,29 @@ namespace SsrsDeploy
                 Marshal.ZeroFreeGlobalAllocUnicode(valuePtr);
             }
         }
+
+        #region XDocument
+
+        public static string GetXAttributeValue(this XAttribute attribute, string defaultValue = null)
+        {
+            if (attribute == null)
+            {
+                return null;
+            }
+
+            return attribute.Value ?? defaultValue;
+        }
+
+        public static string GetXElementValue(this XElement element, string defaultValue = null)
+        {
+            if (element == null)
+            {
+                return null;
+            }
+
+            return element.Value ?? defaultValue;
+        }
+
+        #endregion
     }
 }

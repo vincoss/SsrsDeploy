@@ -6,6 +6,8 @@ using System.Security;
 using System.Text;
 using SsrsDeploy.Logging;
 using System.IO;
+using System.Xml.Linq;
+using System.Dynamic;
 
 namespace SsrsDeploy.Engine
 {
@@ -180,6 +182,13 @@ namespace SsrsDeploy.Engine
         // TODO: refactor
         private int DeployItem(ReportItem item)
         {
+            if(item.FullName.EndsWith(".rds"))
+            {
+                var config = GetConfigFromRptDataSource(item.Content);
+                PublishDataSource(_reportServerUrl, _parentPath, config, _userName, Extensions.SecureStringToString(_password), _domainName);
+                return 0;
+            }
+
            return  CreateCatalogItemReportService2010(_reportServerUrl, _parentPath, item, _userName, Extensions.SecureStringToString(_password), _domainName);
         }
 
@@ -199,20 +208,20 @@ namespace SsrsDeploy.Engine
 
         #region ReportService2010 methods TODO: Refactor into class
 
-        protected virtual string GetExistingItemReportService2010(string itemPath, string reportServerUrl, string userName, string password, string domain)
+        protected virtual string GetExistingItemReportService2010(string itemPath, string reportServiceUrl, string userName, string password, string domain)
         {
             if (string.IsNullOrEmpty(itemPath))
             {
                 throw new ArgumentNullException(nameof(itemPath));
             }
-            if (string.IsNullOrEmpty(reportServerUrl))
+            if (string.IsNullOrEmpty(reportServiceUrl))
             {
-                throw new ArgumentNullException(nameof(reportServerUrl));
+                throw new ArgumentNullException(nameof(reportServiceUrl));
             }
 
             var reportingService = new ReportingService2010();
 
-            reportingService.Url = GetFullServiceUrl(reportServerUrl);
+            reportingService.Url = GetFullServiceUrl(reportServiceUrl);
             reportingService.Credentials = System.Net.CredentialCache.DefaultNetworkCredentials;
 
             if (string.IsNullOrEmpty(userName) == false)
@@ -275,6 +284,88 @@ namespace SsrsDeploy.Engine
             return 1;
         }
 
+        private CatalogItem PublishDataSource(string reportServiceUrl, string parentPath, dynamic config, string userName, string password, string domain)
+        {
+            var reportingService = new ReportingService2010();
+
+            reportingService.Url = GetFullServiceUrl(reportServiceUrl);
+            reportingService.Credentials = System.Net.CredentialCache.DefaultNetworkCredentials;
+
+            if (string.IsNullOrEmpty(userName) == false)
+            {
+                reportingService.Credentials = new System.Net.NetworkCredential(userName, password, domain);
+            }
+
+            var definition = new DataSourceDefinition
+            {
+                CredentialRetrieval = Get(config),
+                ConnectString = (string)config.ConnectString,
+                Enabled = true,
+                EnabledSpecified = true,
+                Extension = config.Extension,
+                WindowsCredentials = false
+
+                // TODO:
+                //UserName = (string)config.DataSource.Username,
+                //Password = (string)config.DataSource.Password
+            };
+
+            var item = reportingService.CreateDataSource(config.Name, parentPath, true, definition, null);
+
+            return item;
+        }
+
+        public static dynamic GetConfigFromRptDataSource(string content)
+        {
+            if (string.IsNullOrEmpty(content))
+            {
+                throw new ArgumentNullException(nameof(content));
+            }
+
+            var root = XElement.Parse(content);
+
+            if (string.Equals(root.Name.ToString(), "RptDataSource", StringComparison.Ordinal) == false)
+            {
+                throw new InvalidOperationException(string.Format("Invalid element. RptDataSource element is required"));
+            }
+
+            dynamic dynamo = new ExpandoObject();
+            var pairs = (IDictionary<string, object>)dynamo;
+
+            pairs.Add("Name", root.Attribute("Name").GetXAttributeValue());
+
+            var connectionProperties = root.Element("ConnectionProperties");
+
+            pairs.Add("Extension", connectionProperties.Element("Extension").GetXElementValue());
+            pairs.Add("ConnectString", connectionProperties.Element("ConnectString").GetXElementValue());
+            pairs.Add("IntegratedSecurity", connectionProperties.Element("IntegratedSecurity").GetXElementValue());
+            pairs.Add("Prompt", connectionProperties.Element("Prompt").GetXElementValue());
+
+            return dynamo;
+        }
+
+        private static CredentialRetrievalEnum Get(dynamic config)
+        {
+            if(config.Prompt != null)
+            {
+                return CredentialRetrievalEnum.Prompt;
+            }
+            if(IsIntegratedSecurity(config.IntegratedSecurity))
+            {
+                return CredentialRetrievalEnum.Integrated;
+            }
+            return CredentialRetrievalEnum.Store;
+        }
+
+        private static bool IsIntegratedSecurity(string value)
+        {
+            if(string.IsNullOrEmpty(value))
+            {
+                return false;
+            }
+            return value.Equals("true", StringComparison.OrdinalIgnoreCase);
+        }
+
         private string GetCatalogItemType(string item)
         {
             if (string.IsNullOrEmpty(item))
@@ -304,5 +395,6 @@ namespace SsrsDeploy.Engine
         }
 
         #endregion
+        
     }
 }
