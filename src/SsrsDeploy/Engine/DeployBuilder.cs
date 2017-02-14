@@ -134,6 +134,8 @@ namespace SsrsDeploy.Engine
 
                     if (IsUpgradeRequired(item) == false)
                     {
+                        executed.Add(item); // Add as executed
+
                         _logger.Debug("Item does not require update");
 
                         continue;
