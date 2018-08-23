@@ -6,7 +6,7 @@ using System.Text;
 
 namespace SsrsDeploy.Engine
 {
-    [DebuggerDisplay("Name: {Name}, FullName: {FullName}, ContentHash: {ContentHash}")]
+    [DebuggerDisplay("Name: {Name}, FullName: {FullName}, SortOrder: {SortOrder}, ContentHash: {ContentHash}")]
     public class ReportItem
     {
         public ReportItem(string name, string content)
@@ -23,6 +23,29 @@ namespace SsrsDeploy.Engine
             Name = GetFileNameFromResourceName(FullName);
             Content = content;
             ContentHash = Extensions.GetKnuthHash(content);
+            SortOrder = GetSortOrder(name);
+        }
+
+        public static int GetSortOrder(string name)
+        {
+            if(string.IsNullOrEmpty(name))
+            {
+                throw new ArgumentNullException(nameof(name));
+            }
+            
+            if(name.EndsWith(".rds"))
+            {
+                return 0;
+            }
+            if (name.EndsWith(".rsd"))
+            {
+                return 1;
+            }
+            if (name.EndsWith(".rdl"))
+            {
+                return 2;
+            }
+            return 3;
         }
 
         public static ReportItem FromStream(string name, Stream stream)
@@ -79,6 +102,8 @@ namespace SsrsDeploy.Engine
         public string Content { get; private set; }
 
         public ulong ContentHash { get; private set; }
+
+        public int SortOrder { get; set; }
 
     }
 }

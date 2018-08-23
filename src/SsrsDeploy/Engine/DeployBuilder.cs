@@ -121,7 +121,9 @@ namespace SsrsDeploy.Engine
             {
                 _logger.Debug("Begin items deploy.");
 
-                var itemsToDeploy = new EmbeddedReportItemProvider(new[] { _assembly }, _filter, Encoding.Default).GetItems();
+                var itemsToDeploy = new EmbeddedReportItemProvider(new[] { _assembly }, _filter, Encoding.Default)
+                                    .GetItems()
+                                    .OrderBy(x => x.SortOrder).ToArray();
 
                 if (itemsToDeploy.Any() == false)
                 {
